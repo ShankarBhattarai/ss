@@ -46,7 +46,7 @@ foreach($servers as $server) {
 	}
 	$providers[$server->provider]->servers[] = $server;
 }
-header('Refresh: '60);
+header('Refresh: 60');
 
 $tpl = $smarty->createTemplate("index.tpl");
 $tpl->assign('scripts', array('js/status.js'));
