@@ -9,7 +9,8 @@
 		<!-- Le javascript
 		================================================== -->
 		<!-- Placed at the end of the document so the pages load faster -->
-		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		<script src="js/jquery.min.js"></script>
+		<script src="js/featherlight.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		{if isset($scripts) && is_array($scripts)}
 		{foreach $scripts as $url}<script src="{$url}"></script>{/foreach}

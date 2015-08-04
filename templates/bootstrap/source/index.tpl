@@ -30,7 +30,9 @@
 {assign var="memperc" value=$server->memused/$server->memtotal*100}
 {assign var="diskperc" value=$server->diskused/$server->disktotal*100}
 							<tr style="text-align: center">
-								<td>{$server->name}</td>
+								<td>
+									<a href="graphs.php?s={$server->serverid}" data-featherlight="ajax">{$server->name}</a>
+								</td>
 								<td>{$server->uptime}</td>
 								<td>
 									{$server->memused}MB/{$server->memtotal}MB

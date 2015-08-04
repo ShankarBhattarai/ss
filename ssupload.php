@@ -30,10 +30,12 @@ foreach($fields as $field) {
 	$fieldarr[] = $field . ' = ?';
 }
 
-#$insq = $db->prepare('INSERT IGNORE INTO stats (`serverid`) VALUES (?)');
-#$insq->execute(array($result->uid));
+# Create record in current stats if not already exists.
+$dbq = $db->prepare('INSERT IGNORE INTO stats_current (`serverid`) VALUES (?)');
+$dbq->execute(array(intval($result->uid)));
 
-$dbq = $db->prepare('UPDATE stats SET ' . implode(', ', $fieldarr) . ' WHERE serverid = ?');
+# Update current stats.
+$dbq = $db->prepare('UPDATE stats_current SET ' . implode(', ', $fieldarr) . ' WHERE serverid = ?');
 
 $data = array(
 	//Time
@@ -62,6 +64,17 @@ $data = array(
 	//Server ID
 	intval($result->uid)
 );
+
+if(!$dbq->execute($data)) {
+	error_log(print_r($dbq->errorInfo(), true));
+}
+
+
+# Insert into stats history.
+$qry = sprintf('INSERT INTO stats_history (%s, serverid) VALUES (%s ?)',
+		implode(', ', $fields), str_repeat('?, ', count($fields)));
+
+$dbq = $db->prepare($qry);
 
 if(!$dbq->execute($data)) {
 	error_log(print_r($dbq->errorInfo(), true));

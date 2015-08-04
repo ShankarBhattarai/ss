@@ -4,7 +4,7 @@
 //Theme information
 $themeinfo = array(
 	'name' => 'Bootstrap',
-	'author' => 'Nikki',
+	'author' => 'Shankar',
 	'description' => 'Standard Bootstrap theme',
 	'version' => "1.0"
 );

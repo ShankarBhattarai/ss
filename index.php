@@ -4,7 +4,7 @@ require_once "includes/template.php";
 require_once "includes/database.php";
 require_once "includes/functions.php";
 
-$dbs = $db->prepare('SELECT servers.id,servers.name,servers.provider,stats.* FROM servers, stats WHERE stats.serverid = servers.id');
+$dbs = $db->prepare('SELECT s.id, s.name, s.provider, sc.* FROM servers AS s, stats_current AS sc WHERE sc.serverid = s.id');
 $dbs->execute();
 
 $providerq = $db->prepare('SELECT id, shortname, name FROM providers');
@@ -46,7 +46,9 @@ foreach($servers as $server) {
 	}
 	$providers[$server->provider]->servers[] = $server;
 }
-header('Refresh: 60');
+
+# Set page auto-refresh time.
+header('Refresh: ' . $config['refresh_time']);
 
 $tpl = $smarty->createTemplate("index.tpl");
 $tpl->assign('scripts', array('js/status.js'));
