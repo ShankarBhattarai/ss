@@ -151,7 +151,7 @@ if ($sub) {
 		$server = $default_server;
 	}
 	
-	$sub .= " $server has high resource consumption"
+	$sub .= " $server has high resource consumption";
 	
 	$msg = "Dear $name,\n\n";
 	$msg .= "It seems one of your servers is consuming a lot of resources.\n\n";
