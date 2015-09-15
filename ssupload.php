@@ -92,7 +92,7 @@ if(!$dbq->execute($data)) {
 $threshold_crit = 50;
 $threshold_warn = 25;
 
-$thresholds	 = array('RAM' 	=> intval(($result->ram->used / $result->ram->total) * 100)
+$thresholds	 = array('RAM' 	=> intval((($result->ram->used - $result->ram->bufcac) / $result->ram->total) * 100)
 					,'Disk'	=> intval(($result->disk->total->used / $result->disk->total->total) * 100)
 					);
 
@@ -156,8 +156,8 @@ if ($sub) {
 	$msg = "Dear $name,\n\n";
 	$msg .= "It seems one of your servers is consuming a lot of resources.\n\n";
 	$msg .= "Server: $server.\n";
-	foreach ($threshold as $k => $v)
-		$msg .= "$k Usage: $v%.\n";
+	foreach ($thresholds as $k => $v)
+		$msg .= "\t$k Usage: ${v}%.\n";
 	$msg .= "\nThank You.\n";
 	
 	# Not working!!!.
@@ -166,25 +166,27 @@ if ($sub) {
 	// Pear Mail Library.
 	require_once "Mail.php";
 	
-	$headers = array('From'		=> 'shankarb152@gmail.com'
+	$headers = array('From'		=> 'ssproject@bishwa.net'
 	    			,'To'		=> $email
 	    			,'Subject'	=> $sub
 					);
 	
 	$smtp = Mail::factory('smtp', array(
-	        'host' => 'ssl://smtp.gmail.com',
-	        'port' => '465',
+	        'host' => 'smtp.bishwa.net',
+	        'port' => '587',
 	        'auth' => true,
-	        'username' => 'shankarb152@gmail.com',
+	        'username' => 'ssproject.bishwa.net',
 	        'password' => 'shankar152'
 	    ));
 	
 	$mail = $smtp->send($email, $headers, $msg);
 	
-	if (PEAR::isError($mail)) {
+	/*
+	if (PEAR::isError($mail))
 	    echo($mail->getMessage());
 	else
 	    echo('Message successfully sent.');
+	// */
 
 }
 
