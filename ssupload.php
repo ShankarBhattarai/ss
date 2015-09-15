@@ -160,7 +160,26 @@ if ($sub) {
 		$msg .= "$k Usage: $v%.\n";
 	$msg .= "\nThank You.\n";
 	
-	mail($email, $sub, $msg);
+	# Not working!!!.
+	#mail($email, $sub, $msg);
+	
+	// Pear Mail Library.
+	require_once "Mail.php";
+	
+	$headers = array('From'		=> 'shankarb152@gmail.com'
+	    			,'To'		=> $email
+	    			,'Subject'	=> $sub
+					);
+	
+	$smtp = Mail::factory('smtp', array(
+	        'host' => 'ssl://smtp.gmail.com',
+	        'port' => '465',
+	        'auth' => true,
+	        'username' => 'shankarb152@gmail.com',
+	        'password' => 'shankar152'
+	    ));
+	
+	$mail = $smtp->send($email, $headers, $msg);
 	
 }
 
