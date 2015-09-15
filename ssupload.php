@@ -85,4 +85,84 @@ if(!$dbq->execute($data)) {
 
 #$rrd = new StatusRRD($result->uid, $info->rrdstep);
 #$rrd->update($result);
+
+
+// Check thrsholds.
+
+$threshold_crit = 50;
+$threshold_warn = 25;
+
+$thresholds	 = array('RAM' 	=> (intval($result->ram->used / $result->ram->total) * 100)
+					,'Disk'	=> (intval($result->disk->total->used / $result->disk->total->total) * 100)
+					);
+
+$sub = '';
+
+// Check CRITICAL level.
+foreach ($thresholds as $threshold) {
+	if ($threshold >= $threshold_crit) {
+		$sub = '[CRITICAL]';
+		break;
+	}
+}
+
+// Check WARNING level.
+if (!$sub) {
+	foreach ($thresholds as $threshold) {
+		if ($threshold >= $threshold_warn) {
+			$sub = '[WARNING]';
+			break;
+		}
+	}
+}
+
+if ($sub) {
+	
+	$uid = intval($result->uid);
+	
+	$default_name = 'Shankar Bhattarai';
+	$default_email = 'danger.bhattarai@gmail.com';
+	$default_server = "Unknown Server (ID: $uid)";
+	
+	$qry = "SELECT id, name, provider FROM servers WHERE id = ?";
+	
+	$dbq = $db->prepare($qry);
+	$dbq->execute(array($uid));
+	
+	if ($dbq->rowCount() != 0) {
+		$srv = $dbq->fetch(PDO::FETCH_OBJ);
+		$server = $srv->name;
+		$qry = "SELECT id, name, email FROM providers WHERE id = ?";
+		$dbq = $db->prepare($qry);
+		$dbq->execute(array($srv->provider));
+		if ($dbq->rowCount() != 0) {
+			$prv = $dbq->fetch(PDO::FETCH_OBJ);
+			$name = $prv->name;
+			$email = $prv->email;
+		}
+		else {
+			$name = $default_name;
+			$email = $default_email;
+		}
+	}
+	else {
+		$name = $default_name;
+		$email = $default_email;
+		$server = $default_server;
+	}
+	
+	$sub .= " $server has high resource consumption"
+	
+	$msg = "Dear $name,\n\n";
+	$msg .= "It seems one of your servers is consuming a lot of resources.\n\n";
+	$msg .= "Server: $server.\n";
+	foreach ($threshold as $k => $v)
+		$msg .= "$k Usage: $v%.\n";
+	$msg .= "\nThank You.\n";
+	
+	mail($email, $sub, $msg);
+	
+}
+
+
 ?>
