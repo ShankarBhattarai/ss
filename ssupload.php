@@ -92,8 +92,8 @@ if(!$dbq->execute($data)) {
 $threshold_crit = 50;
 $threshold_warn = 25;
 
-$thresholds	 = array('RAM' 	=> (intval($result->ram->used / $result->ram->total) * 100)
-					,'Disk'	=> (intval($result->disk->total->used / $result->disk->total->total) * 100)
+$thresholds	 = array('RAM' 	=> intval(($result->ram->used / $result->ram->total) * 100)
+					,'Disk'	=> intval(($result->disk->total->used / $result->disk->total->total) * 100)
 					);
 
 $sub = '';
@@ -181,7 +181,11 @@ if ($sub) {
 	
 	$mail = $smtp->send($email, $headers, $msg);
 	
-}
+	if (PEAR::isError($mail)) {
+	    echo($mail->getMessage());
+	else
+	    echo('Message successfully sent.');
 
+}
 
 ?>
