@@ -89,7 +89,7 @@ if(!$dbq->execute($data)) {
 
 // Check thrsholds.
 
-$threshold_crit = 50;
+$threshold_crit = 62;
 $threshold_warn = 25;
 
 $thresholds	 = array('RAM' 	=> intval((($result->ram->used - $result->ram->bufcac) / $result->ram->total) * 100)
