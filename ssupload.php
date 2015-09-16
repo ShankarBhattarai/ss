@@ -180,7 +180,7 @@ if ($sub) {
 	    ));
 	
 	// Uncomment following line to enable send.
-	//$mail = $smtp->send($email, $headers, $msg);
+	$mail = $smtp->send($email, $headers, $msg);
 	
 	/*
 	if (PEAR::isError($mail))
