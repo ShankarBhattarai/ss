@@ -2,7 +2,8 @@
 			<hr>
 			<footer class="footer">
 		        <p class="pull-right"><a href="#">Back to top</a></p>
-		       	<p>&copy; 2015 Shankar Bhattarai - <a href="http://github.com/shankarbhattarai/ss">Powered by Server Security v{$version}</a></p>
+		       	<!-- <p>&copy; 2015 Shankar Bhattarai - <a href="http://github.com/shankarbhattarai/ss">Powered by Server Security v{$version}</a></p> -->
+			<p>&copy; 2016 Bimal Gaire </p>		
 	      	</footer>
 		</div> <!-- /container -->
 		
